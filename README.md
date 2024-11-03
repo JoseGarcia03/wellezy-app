@@ -19,7 +19,7 @@ Web para reservar vuelos.
 2. Navega al directorio del proyecto:
 
     ```bash
-    cd tu-repositorio
+    cd wellezy-app
     ```
 
 3. Instala las dependencias:
