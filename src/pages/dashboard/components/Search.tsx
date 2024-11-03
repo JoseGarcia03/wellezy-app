@@ -15,12 +15,19 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { Item, parseDataToOrigin } from "../helpers/parseDataToSelect.ts";
 import { AiOutlineLoading } from "react-icons/ai";
+import { DatePicker } from "@mui/x-date-pickers";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { LoadingButton } from "@mui/lab";
+import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
+import { DateRange } from "@mui/x-date-pickers-pro";
+import dayjs from "dayjs";
 
 const Search: React.FC = () => {
     const [origin, setOrigin] = useState<string>("");
     const [origins, setOrigins] = useState<Item[]>([]);
     const [destination, setDestination] = useState<string>("");
     const [destinations, setDestinations] = useState<Item[]>([]);
+    const [flightType, setFlightType] = useState<string>("oneway");
 
     const getOrigins = useMutation({
         mutationFn: async (code: string) =>
@@ -43,6 +50,15 @@ const Search: React.FC = () => {
             setDestinations(destinations);
         },
     });
+
+    /* const getFlights = useMutation({
+        mutationFn: async () =>
+            await axios.post(
+                `${import.meta.env.VITE_API_TRAVEL}/flights/v2`,
+                itinerary
+            ),
+        onSuccess: (resp) => console.log(resp),
+    }); */
 
     useEffect(() => {
         if (origin.length > 0) {
@@ -68,6 +84,15 @@ const Search: React.FC = () => {
         event: React.ChangeEvent<HTMLInputElement>
     ) => setDestination(event.target.value);
 
+    const handlePickDateRange = (dates: DateRange<dayjs.Dayjs>) => {};
+    const handlePickDate = (date: dayjs.Dayjs | null) => {};
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        /* getFlights.mutate(); */
+    };
+
     return (
         <Container maxWidth={"xl"}>
             <Box className={"flex flex-col bg-white px-6 py-4 rounded-2xl"}>
@@ -81,6 +106,9 @@ const Search: React.FC = () => {
                             row
                             name="type-flight"
                             defaultValue={"oneway"}
+                            onChange={(value) =>
+                                setFlightType(value.target.value)
+                            }
                         >
                             <FormControlLabel
                                 value={"oneway"}
@@ -95,7 +123,18 @@ const Search: React.FC = () => {
                         </RadioGroup>
                     </FormControl>
                 </Box>
-                <Box component={"form"} sx={{ mt: 2, display: "flex", gap: 4 }}>
+                <Box
+                    onSubmit={handleSubmit}
+                    component={"form"}
+                    sx={{
+                        mt: 2,
+                        display: "flex",
+                        gap: 1,
+                        alignItems: "center",
+                        justifyContent: "space-around",
+                        flexWrap: "wrap",
+                    }}
+                >
                     <FormControl>
                         <Autocomplete
                             freeSolo={!getOrigins.isPending}
@@ -134,6 +173,28 @@ const Search: React.FC = () => {
                             options={destinations}
                         />
                     </FormControl>
+                    <FormControl>
+                        {flightType === "roundtrip" && (
+                            <DemoContainer
+                                components={["DateRangePicker"]}
+                                sx={{ mt: -1 }}
+                            >
+                                <DateRangePicker
+                                    onChange={handlePickDateRange}
+                                    localeText={{
+                                        start: "Ida",
+                                        end: "Vuelta",
+                                    }}
+                                />
+                            </DemoContainer>
+                        )}
+                        {flightType === "oneway" && (
+                            <DatePicker onChange={handlePickDate} label="Ida" />
+                        )}
+                    </FormControl>
+                    <LoadingButton type="submit" variant="contained">
+                        Buscar
+                    </LoadingButton>
                 </Box>
             </Box>
         </Container>
