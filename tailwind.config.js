@@ -12,7 +12,8 @@ export default {
       },
       backgroundColor: {
         base: "#EBEFFF",
-        primary: "#AFB3FF"
+        primary: "#AFB3FF",
+        navbar: "#3D3A7F"
       }
     },
   },

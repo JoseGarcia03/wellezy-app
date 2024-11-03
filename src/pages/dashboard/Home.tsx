@@ -1,14 +1,13 @@
-import React, {useContext} from "react";
-import {AuthContext} from "../../context/AuthContext.tsx";
+import React from "react";
+import Navbar from "../../components/Navbar.tsx";
+import Search from "./components/Search.tsx";
 
 const Home: React.FC = () => {
-    const authContext = useContext(AuthContext);
-    console.log(authContext);
-
     return (
-        <div>
-            Hola {authContext?.user?.name}
-        </div>
+        <React.Fragment>
+            <Navbar />
+            <Search />
+        </React.Fragment>
     )
 }
 export default Home;
