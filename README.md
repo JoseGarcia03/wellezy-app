@@ -1,6 +1,6 @@
-# Nombre de tu App
+# Wellezy
 
-Una breve descripción de tu proyecto y su propósito.
+Web para reservar vuelos.
 
 ## Tabla de Contenidos
 
