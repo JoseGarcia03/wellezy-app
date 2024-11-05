@@ -19,8 +19,6 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LoadingButton } from "@mui/lab";
 import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
-import { DateRange } from "@mui/x-date-pickers-pro";
-import dayjs from "dayjs";
 
 const Search: React.FC = () => {
     const [origin, setOrigin] = useState<string>("");
@@ -84,8 +82,8 @@ const Search: React.FC = () => {
         event: React.ChangeEvent<HTMLInputElement>
     ) => setDestination(event.target.value);
 
-    const handlePickDateRange = (dates: DateRange<dayjs.Dayjs>) => {};
-    const handlePickDate = (date: dayjs.Dayjs | null) => {};
+    // const handlePickDateRange = (dates: DateRange<dayjs.Dayjs>) => {};
+    // const handlePickDate = (date: dayjs.Dayjs | null) => {};
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -180,7 +178,7 @@ const Search: React.FC = () => {
                                 sx={{ mt: -1 }}
                             >
                                 <DateRangePicker
-                                    onChange={handlePickDateRange}
+                                    // onChange={handlePickDateRange}
                                     localeText={{
                                         start: "Ida",
                                         end: "Vuelta",
@@ -189,7 +187,10 @@ const Search: React.FC = () => {
                             </DemoContainer>
                         )}
                         {flightType === "oneway" && (
-                            <DatePicker onChange={handlePickDate} label="Ida" />
+                            <DatePicker
+                                // onChange={handlePickDate}
+                                label="Ida"
+                            />
                         )}
                     </FormControl>
                     <LoadingButton type="submit" variant="contained">

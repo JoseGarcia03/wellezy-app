@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useState } from "react";
+import React, { createContext, ReactNode } from "react";
 
 interface ItineraryType {
     departureCity: string;
@@ -28,17 +28,17 @@ interface ItineratyContextProvider {
 const IntineraryContextProvider: React.FC<ItineratyContextProvider> = ({
     children,
 }) => {
-    const [itineraries, setItineraries] = useState<ItineraryType[]>([]);
-    const [direct, setDirect] = useState<boolean>(false);
-    const [currency, setCurrecy] = useState<string>("COP");
-    const [firstClass, setFirstClass] = useState<boolean>(false);
-    const [qtyPassengers, setQtyPassengers] = useState<number>(0);
-    const [adult, setAdult] = useState<number>(0);
-    const [child, setChid] = useState<number>(0);
-    const [baby, setBaby] = useState<number>(0);
-    const [seat, setSeat] = useState<number>(0);
-    const [itinerary, setItinerary] = useState<ItineraryType | undefined>();
-    const [details, setDetails] = useState();
+    // const [itineraries, setItineraries] = useState<ItineraryType[]>([]);
+    // const [direct, setDirect] = useState<boolean>(false);
+    // const [currency, setCurrecy] = useState<string>("COP");
+    // const [firstClass, setFirstClass] = useState<boolean>(false);
+    // const [qtyPassengers, setQtyPassengers] = useState<number>(0);
+    // const [adult, setAdult] = useState<number>(0);
+    // const [child, setChid] = useState<number>(0);
+    // const [baby, setBaby] = useState<number>(0);
+    // const [seat, setSeat] = useState<number>(0);
+    // const [itinerary, setItinerary] = useState<ItineraryType | undefined>();
+    // const [details, setDetails] = useState();
 
     /* const setItineraryState = (itinerary: ItineraryType|undefined) => {
         setItinerary(itinerary);
@@ -46,7 +46,8 @@ const IntineraryContextProvider: React.FC<ItineratyContextProvider> = ({
     } */
 
     return (
-        <ItineraryContext.Provider
+        <>
+            {/* <ItineraryContext.Provider
             value={{
                 itineraries,
                 direct,
@@ -58,9 +59,10 @@ const IntineraryContextProvider: React.FC<ItineratyContextProvider> = ({
                 baby,
                 seat,
             }}
-        >
+        > */}
             {children}
-        </ItineraryContext.Provider>
+            {/* </ItineraryContext.Provider> */}
+        </>
     );
 };
 export { ItineraryContext, IntineraryContextProvider };
