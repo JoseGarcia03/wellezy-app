@@ -9,8 +9,8 @@ interface FlightCardProps {
 const FlightCard: React.FC<FlightCardProps> = ({ segments }) => {
     return (
         <Card className="px-8 py-4 shadow-xl">
-            {segments.map((segment) => (
-                <Box>
+            {segments.map((segment, idx) => (
+                <Box key={`${segment.flightOrtrainNumber}-${idx}`}>
                     <Box className="flex gap-5 items-center">
                         <img
                             src={`https://pics.avs.io/60/60/${segment.companyId.marketingCarrier}.png`}

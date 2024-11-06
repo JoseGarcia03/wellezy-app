@@ -16,8 +16,9 @@ const Flights: React.FC = () => {
                         COP
                     </Typography>
                     <Box className="flex gap-5 items-center">
-                        {flights.companies.map((company) => (
+                        {flights.companies.map((company, idx) => (
                             <img
+                                key={`${company}-${idx}`}
                                 src={`https://pics.avs.io/60/60/${company}.png`}
                             />
                         ))}

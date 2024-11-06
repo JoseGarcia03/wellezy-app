@@ -93,9 +93,13 @@ const Search: React.FC<SearchProps> = ({ setShowNotify }) => {
     const handleChangeOrigin = (event: React.ChangeEvent<HTMLInputElement>) =>
         setFrom(event.target.value);
 
+    const handleChangeFrom = (value: { value: string }) => setFrom(value.value);
+
     const handleChangeDestination = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => setTo(event.target.value);
+
+    const handleChangeTo = (value: { value: string }) => setTo(value.value);
 
     // const handlePickDateRange = (dates: DateRange<dayjs.Dayjs>) => {};
     const handlePickDate = (date: dayjs.Dayjs | null) => {
@@ -172,6 +176,9 @@ const Search: React.FC<SearchProps> = ({ setShowNotify }) => {
                             clearIcon={false}
                             groupBy={(option) => option.group}
                             sx={{ width: 250 }}
+                            onChange={(_, value) =>
+                                handleChangeFrom(value as { value: string })
+                            }
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
@@ -191,6 +198,9 @@ const Search: React.FC<SearchProps> = ({ setShowNotify }) => {
                             clearIcon={false}
                             groupBy={(option) => option.group}
                             sx={{ width: 250 }}
+                            onChange={(_, value) =>
+                                handleChangeTo(value as { value: string })
+                            }
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
