@@ -5,6 +5,7 @@ export interface User {
     name: string;
     last_name: string;
     email: string;
+    token: string;
 }
 
 export interface AuthSliceState {
@@ -26,6 +27,9 @@ export const AuthSlice = createSlice({
         login: (state, action: PayloadAction<User>) => {
             state.user = action.payload;
             state.isAuth = true;
+            state.token = action.payload.token;
+
+            localStorage.setItem("token", action.payload.token);
         },
         logout: (state) => {
             localStorage.removeItem("token");

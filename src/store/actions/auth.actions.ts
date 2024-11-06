@@ -1,7 +1,7 @@
 import axios from "axios";
 import { UnknownAction } from "redux";
 import { ThunkAction } from "redux-thunk";
-import { login } from "../slices/auth.slice";
+import { login, logout } from "../slices/auth.slice";
 import { RootState } from "../store";
 
 export const thunkLoginAction =
@@ -9,8 +9,10 @@ export const thunkLoginAction =
     async (dispatch) => {
         const resp = await loginFetch(token);
 
-        if (resp?.errors?.lenght !== 0) {
-            dispatch(login(resp.data));
+        if (resp && resp?.errors?.lenght !== 0) {
+            dispatch(login({ ...resp?.data, token: token }));
+        } else {
+            dispatch(logout());
         }
     };
 
@@ -24,8 +26,9 @@ async function loginFetch(token: string) {
                 },
             }
         );
-        return resp.data;
+        return resp?.data;
     } catch (err) {
+        localStorage.removeItem("token");
         console.log(err);
     }
 }

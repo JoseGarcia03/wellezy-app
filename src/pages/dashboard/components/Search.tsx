@@ -19,13 +19,27 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LoadingButton } from "@mui/lab";
 import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
+import dayjs from "dayjs";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux.ts";
+import {
+    addOnewayItinerary,
+    setFlights,
+} from "../../../store/slices/flight.slice.ts";
 
-const Search: React.FC = () => {
-    const [origin, setOrigin] = useState<string>("");
+interface SearchProps {
+    setShowNotify: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Search: React.FC<SearchProps> = ({ setShowNotify }) => {
+    const [from, setFrom] = useState<string>("");
     const [origins, setOrigins] = useState<Item[]>([]);
-    const [destination, setDestination] = useState<string>("");
+    const [to, setTo] = useState<string>("");
     const [destinations, setDestinations] = useState<Item[]>([]);
     const [flightType, setFlightType] = useState<string>("oneway");
+    const [checkIn, setCheckIn] = useState<string>("");
+
+    const dispatch = useAppDispatch();
+    const { filters } = useAppSelector((state) => state.flight);
 
     const getOrigins = useMutation({
         mutationFn: async (code: string) =>
@@ -49,46 +63,62 @@ const Search: React.FC = () => {
         },
     });
 
-    /* const getFlights = useMutation({
+    const getFlights = useMutation({
         mutationFn: async () =>
             await axios.post(
                 `${import.meta.env.VITE_API_TRAVEL}/flights/v2`,
-                itinerary
+                filters
             ),
-        onSuccess: (resp) => console.log(resp),
-    }); */
+        onSuccess: (resp) => dispatch(setFlights(resp.data.data)),
+    });
 
     useEffect(() => {
-        if (origin.length > 0) {
+        if (from.length > 0) {
             const handlerOrigins = setTimeout(() => {
-                getOrigins.mutate(origin);
+                getOrigins.mutate(from);
             }, 700);
             return () => clearTimeout(handlerOrigins);
         }
-    }, [origin]);
+    }, [from]);
 
     useEffect(() => {
-        if (destination.length > 0) {
+        if (to.length > 0) {
             const handlerOrigins = setTimeout(() => {
-                getDestinations.mutate(destination);
+                getDestinations.mutate(to);
             }, 700);
             return () => clearTimeout(handlerOrigins);
         }
-    }, [destination]);
+    }, [to]);
 
     const handleChangeOrigin = (event: React.ChangeEvent<HTMLInputElement>) =>
-        setOrigin(event.target.value);
+        setFrom(event.target.value);
+
     const handleChangeDestination = (
         event: React.ChangeEvent<HTMLInputElement>
-    ) => setDestination(event.target.value);
+    ) => setTo(event.target.value);
 
     // const handlePickDateRange = (dates: DateRange<dayjs.Dayjs>) => {};
-    // const handlePickDate = (date: dayjs.Dayjs | null) => {};
+    const handlePickDate = (date: dayjs.Dayjs | null) => {
+        if (date?.toISOString()) setCheckIn(date.toISOString());
+    };
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        /* getFlights.mutate(); */
+        if (!from || !to || !checkIn || !flightType) {
+            setShowNotify(true);
+            return;
+        }
+
+        dispatch(
+            addOnewayItinerary({
+                departureCity: from.toUpperCase(),
+                arrivalCity: to.toUpperCase(),
+                hour: checkIn,
+            })
+        );
+
+        getFlights.mutate();
     };
 
     return (
@@ -187,13 +217,14 @@ const Search: React.FC = () => {
                             </DemoContainer>
                         )}
                         {flightType === "oneway" && (
-                            <DatePicker
-                                // onChange={handlePickDate}
-                                label="Ida"
-                            />
+                            <DatePicker onChange={handlePickDate} label="Ida" />
                         )}
                     </FormControl>
-                    <LoadingButton type="submit" variant="contained">
+                    <LoadingButton
+                        loading={getFlights.isPending}
+                        type="submit"
+                        variant="contained"
+                    >
                         Buscar
                     </LoadingButton>
                 </Box>

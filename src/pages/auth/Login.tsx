@@ -40,7 +40,7 @@ const Login: React.FC = () => {
         mutationFn: async () =>
             await axios.post(`${import.meta.env.VITE_API_URL}/login`, values),
         onSuccess: ({ data }) => {
-            dispatch(login(data.data.user));
+            dispatch(login({ ...data.data.user, token: data.data.token }));
         },
         onError: (error) => {
             // @ts-ignore

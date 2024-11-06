@@ -8,7 +8,7 @@ const initialState: LayoutSliceState = {
     isLoading: true,
 };
 
-export const LayoutSlice = createSlice({
+const LayoutSlice = createSlice({
     name: "layout",
     initialState,
     reducers: {

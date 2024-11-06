@@ -28,7 +28,6 @@ const AppRouter: React.FC = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        console.log(isLoading);
         const token = localStorage.getItem("token");
         if (token) {
             dispatch(thunkLoginAction(token));
