@@ -1,10 +1,10 @@
-import React, {useContext} from "react";
-import {Navigate, Outlet} from "react-router-dom";
-import {AuthContext} from "../context/AuthContext.tsx";
+import React from "react";
+import { Navigate, Outlet } from "react-router-dom";
+import { useAppSelector } from "../hooks/redux.ts";
 
 const PrivateRoutes: React.FC = () => {
-    const authContext = useContext(AuthContext);
+    const { isAuth } = useAppSelector((state) => state.auth);
 
-    return authContext?.token ? <Outlet /> : <Navigate to={"/login"} />;
-}
+    return isAuth ? <Outlet /> : <Navigate to={"/login"} />;
+};
 export default PrivateRoutes;

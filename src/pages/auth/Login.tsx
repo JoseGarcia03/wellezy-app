@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import {
     Alert,
     Box,
@@ -18,15 +18,15 @@ import useForm from "../../hooks/useForm.ts";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext.tsx";
-import LoadingBackdrop from "../../components/LoadingBackdrop.tsx";
+import { login } from "../../store/slices/auth.slice.ts";
+import { useAppDispatch } from "../../hooks/redux.ts";
 
 type FormData = {
     email: string;
     password: string;
 };
 const Login: React.FC = () => {
-    const authContext = useContext(AuthContext);
+    const dispatch = useAppDispatch();
 
     const [showNotify, setShowNotify] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>("");
@@ -40,8 +40,7 @@ const Login: React.FC = () => {
         mutationFn: async () =>
             await axios.post(`${import.meta.env.VITE_API_URL}/login`, values),
         onSuccess: ({ data }) => {
-            authContext?.setUserData(data.data.user);
-            authContext?.login(data.data.token);
+            dispatch(login(data.data.user));
         },
         onError: (error) => {
             // @ts-ignore
@@ -55,8 +54,6 @@ const Login: React.FC = () => {
         event.preventDefault();
         mutation.mutate();
     };
-
-    if (!authContext) return <LoadingBackdrop />;
 
     return (
         <div className={"flex items-center"}>
@@ -155,7 +152,7 @@ const Login: React.FC = () => {
                 }
             >
                 <DotLottieReact
-                    src={"src/assets/airplane_animation.json"}
+                    src={"src/lotties/airplane_animation.json"}
                     className={"max-w-full scale-150"}
                     loop
                     autoplay
